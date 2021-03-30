@@ -1,8 +1,7 @@
 name: rounded_tabbar_widget
-description: A new Flutter package project.
+description: A simple flutter package for creating a TabBarView layout with custom Tabbar.
 version: 0.0.1
-author:
-homepage:
+homepage: https://github.com/TeaTalkInternal/rounded_tabbar_widget
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
