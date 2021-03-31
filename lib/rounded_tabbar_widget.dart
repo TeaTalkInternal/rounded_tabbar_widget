@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:rounded_tabbar_widget/common_widgets/tabbar_widget.dart';
 
 class RoundedTabbarWidget extends StatefulWidget {
-  final List<Widget> pages;
-  final List<IconData> tabIcons;
-  final Color itemNormalColor;
-  final Color itemSelectedColor;
-  final Color tabBarBackgroundColor;
+  final List<Widget>? pages;
+  final List<IconData>? tabIcons;
+  final Color? itemNormalColor;
+  final Color? itemSelectedColor;
+  final Color? tabBarBackgroundColor;
   final int selectedIndex;
-  final Function onTabItemIndexChanged;
+  final Function? onTabItemIndexChanged;
 
   RoundedTabbarWidget({
     @required this.pages,
@@ -28,19 +28,26 @@ class RoundedTabbarWidget extends StatefulWidget {
 
 class _RoundedTabbarWidgetState extends State<RoundedTabbarWidget>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
-  List<Widget> _pages;
-  List<IconData> _tabIcons;
+  late TabController _tabController;
+  late List<Widget> _pages;
+  late List<IconData> _tabIcons;
 
-  int _selectedIndex;
+  late final Color _itemNormalColor;
+  late final Color _itemSelectedColor;
+  late final Color _tabBarBackgroundColor;
+
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
     //Check for pages length.
-    _pages = widget.pages;
-    _tabIcons = widget.tabIcons;
+    _pages = widget.pages ?? [];
+    _tabIcons = widget.tabIcons ?? [];
     _selectedIndex = widget.selectedIndex;
+    _itemNormalColor = widget.itemNormalColor ?? Colors.yellow;
+    _itemSelectedColor = widget.itemSelectedColor ?? Colors.yellow;
+    _tabBarBackgroundColor = widget.tabBarBackgroundColor ?? Colors.black87;
     assert(
         _pages.length > 0 &&
             _pages.length < 6 &&
@@ -52,14 +59,15 @@ class _RoundedTabbarWidgetState extends State<RoundedTabbarWidget>
   void _setupTabbarController() {
     _tabController = new TabController(length: _pages.length, vsync: this);
     _tabController.index = _selectedIndex;
-    _tabController.animation.addListener(() => _animateTabbarOnScroll());
+    _tabController.animation?.addListener(() => _animateTabbarOnScroll());
   }
 
   void _animateTabbarOnScroll() {
     //Since Animation Value switches between 0 and 1, We extract the mid value, where we can begin animation.
-    final double _animationValue =
-        (_tabController.animation.value * 10.0) - 10.0;
-    final _modValue = ((_tabController.animation.value / 10) * 10).toInt();
+    final double _currentAnimationValue =
+        _tabController.animation?.value ?? 0.0;
+    final double _animationValue = (_currentAnimationValue * 10.0) - 10.0;
+    final _modValue = ((_currentAnimationValue / 10) * 10).toInt();
     int _value = (_animationValue % 10).toInt().abs();
 
     if (_value == 5) {
@@ -75,7 +83,9 @@ class _RoundedTabbarWidgetState extends State<RoundedTabbarWidget>
     }
     if (_tabController.indexIsChanging &&
         _tabController.previousIndex != _tabController.index) {
-      widget.onTabItemIndexChanged(_tabController.index);
+      if (widget.onTabItemIndexChanged != null) {
+        widget.onTabItemIndexChanged!(_tabController.index);
+      }
     }
   }
 
@@ -93,9 +103,9 @@ class _RoundedTabbarWidgetState extends State<RoundedTabbarWidget>
               child: TabbarWidget(
                 tabIcons: _tabIcons,
                 selectedIndex: _selectedIndex,
-                itemNormalColor: widget.itemNormalColor,
-                itemSelectedColor: widget.itemSelectedColor,
-                tabBarBackgroundColor: widget.tabBarBackgroundColor,
+                itemNormalColor: _itemNormalColor,
+                itemSelectedColor: _itemSelectedColor,
+                tabBarBackgroundColor: _tabBarBackgroundColor,
                 tabBarSelected: (int index) {
                   setState(() {
                     _tabController.index = index;

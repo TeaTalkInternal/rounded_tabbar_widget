@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 class TabbarItemWidget extends StatefulWidget {
-  final bool isSelected;
-  final IconData icon;
-  final Function onItemPressed;
-  final Color itemNormalColor;
-  final Color itemSelectedColor;
-  final Color itemBackgroundColor;
+  late final bool isSelected;
+  late final IconData icon;
+  final Function? onItemPressed;
+  late final Color itemNormalColor;
+  late final Color itemSelectedColor;
+  late final Color itemBackgroundColor;
   TabbarItemWidget({
-    this.isSelected,
-    this.icon,
+    required this.isSelected,
+    required this.icon,
     this.onItemPressed,
-    this.itemBackgroundColor,
-    this.itemSelectedColor,
-    this.itemNormalColor,
+    required this.itemBackgroundColor,
+    required this.itemSelectedColor,
+    required this.itemNormalColor,
   });
   @override
   _TabbarItemWidgetState createState() => _TabbarItemWidgetState();
@@ -44,12 +44,15 @@ class _TabbarItemWidgetState extends State<TabbarItemWidget> {
           ),
           Container(
             child: IconButton(
-              icon: Icon(
-                widget.icon,
-                color: _iconColor,
-              ),
-              onPressed: widget.onItemPressed,
-            ),
+                icon: Icon(
+                  widget.icon,
+                  color: _iconColor,
+                ),
+                onPressed: () {
+                  if (widget.onItemPressed != null) {
+                    widget.onItemPressed!();
+                  }
+                }),
           ),
         ],
       ),

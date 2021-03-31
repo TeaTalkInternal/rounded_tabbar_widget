@@ -3,38 +3,41 @@ import 'package:rounded_tabbar_widget/common_widgets/tabbar_item_widget.dart';
 
 class TabbarWidget extends StatefulWidget {
   final int selectedIndex;
-  final Color itemNormalColor;
-  final Color itemSelectedColor;
-  final Color tabBarBackgroundColor;
-  final Function tabBarSelected;
+  late final Color itemNormalColor;
+  late final Color itemSelectedColor;
+  late final Color tabBarBackgroundColor;
+  final Function? tabBarSelected;
   final List<IconData> tabIcons;
   TabbarWidget({
     this.selectedIndex = 0,
     this.tabBarSelected,
-    this.tabBarBackgroundColor,
-    this.itemSelectedColor,
-    this.itemNormalColor,
-    @required this.tabIcons,
+    required this.tabBarBackgroundColor,
+    required this.itemSelectedColor,
+    required this.itemNormalColor,
+    required this.tabIcons,
   });
   @override
   _TabbarWidgetState createState() => _TabbarWidgetState();
 }
 
 class _TabbarWidgetState extends State<TabbarWidget> {
-  int _selectedTabbarMenuIndex;
-  List<IconData> _tabIcons;
+  late int _selectedTabbarMenuIndex;
+  late List<IconData> _tabIcons;
   final double _defaultHorizontalPadding = 20.0;
 
   @override
   void initState() {
     super.initState();
+    _selectedTabbarMenuIndex = widget.selectedIndex;
     _tabIcons = widget.tabIcons;
   }
 
-  void _onTabItemPressed({int tabItemIndex}) {
+  void _onTabItemPressed({required int tabItemIndex}) {
     setState(() {
       _selectedTabbarMenuIndex = tabItemIndex;
-      widget.tabBarSelected(tabItemIndex);
+      if (widget.tabBarSelected != null) {
+        widget.tabBarSelected!(tabItemIndex);
+      }
     });
   }
 

@@ -131,10 +131,10 @@
       "name": "rounded_tabbar_widget",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.7"
+      "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-03-30T09:47:04.318090Z",
+  "generated": "2021-03-31T02:36:18.521093Z",
   "generator": "pub",
   "generatorVersion": "2.12.2"
 }
